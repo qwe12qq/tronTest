@@ -16,6 +16,7 @@
 /Suntest/*.xlsx
 .idea/
 .DS_Store*
+*.pyc
 
 
 
