@@ -29,10 +29,10 @@ class tronObject():
 
 
 class contractObject():
-    def __init__(self,httpNode,account):
+    def __init__(self,httpNode,account,key = "127109F1B8FEC8CFAB6A3D4DCE13BBD748195BFD0B08F12FB2776446CC09A11F"):
         self.httpNode = httpNode  # api.trongrid.io or api.nileex.io
         self.account = account
-        self.key = "127109F1B8FEC8CFAB6A3D4DCE13BBD748195BFD0B08F12FB2776446CC09A11F"
+        self.key = key
         self.headers = {"Accept": "application/json","Content-Type": "application/json"}
 
     # URL： https://api.trongrid.io/wallet/triggerconstantcontract
@@ -42,6 +42,7 @@ class contractObject():
         url = "https://{}/wallet/triggerconstantcontract" .format(self.httpNode)
         body = '{"contract_address":"%s","function_selector":"%s","parameter":"%s","fee_limit":100,"call_value":0,"owner_address":"%s","visible": %s}'\
                %(contractAddress, methodName, param, self.account, visibleFlag)
+        # print(url,body)
         response = json.loads(requests.post(url, body, headers = self.headers).text)
 
         if response["result"]["result"] == True:
@@ -81,8 +82,9 @@ class contractObject():
     def TriggerSmartContract(self,contractAddress,functionName,params,callvalue,visible = "true"):
         url = "https://{}/wallet/triggersmartcontract". format(self.httpNode)
         body = '{"contract_address":"%s","owner_address":"%s","function_selector":"%s","parameter":"%s",' \
-               '"fee_limit":30000000, "call_value":%s,"visible": %s}'% \
+               '"fee_limit":5000000000, "call_value":%s,"visible": %s}'% \
                (contractAddress, self.account, functionName, params, callvalue, visible)
+        # print(url,body)
         response = requests.post(url, body, headers = self.headers).text
         responseSign = self.gettransactionsign(response)
         responseBroad = self.broadcastTransaction(responseSign)
@@ -110,7 +112,7 @@ class contractObject():
     def deployContract(self,abi,bytecode,params,originEnergyLimit,name,callValue,consumeUserResourcePercent):
         url = "https://{}/wallet/deploycontract". format(self.httpNode)
         body = {"owner_address": self.account,"abi": abi, "bytecode": bytecode, "parameter": params,
-                "fee_limit":100000000,"origin_energy_limit": originEnergyLimit,"name": name,"call_value":callValue,
+                "fee_limit":5000000000,"origin_energy_limit": originEnergyLimit,"name": name,"call_value":callValue,
                 "consume_user_resource_percent": consumeUserResourcePercent }
         responseDeploy = requests.post(url, json.dumps(body), headers = self.headers).text
         # print("deploy: ",responseDeploy)

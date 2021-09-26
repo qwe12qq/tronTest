@@ -145,7 +145,7 @@ class tools:
         print("excel success!")
 
 def main():
-    t = tools("32791624","32993091","reward0820/",604800,604800,"test0820.xlsx")
+    t = tools("33789995","33991418","reward0924/",604800,604800,"test0924.xlsx")
     t.getNamelist()
     t.parseName2New()
     t.getStandAccure()
